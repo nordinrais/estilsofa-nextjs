@@ -1,7 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { PRODUCTS } from "@/data/products";
@@ -78,7 +76,6 @@ export default function ProductPage() {
 
     return (
         <>
-            <Header />
             <main className="container mx-auto px-6 py-12 min-h-screen">
                 <div className="grid md:grid-cols-[1.5fr_1fr] gap-12 mt-8">
 
@@ -194,7 +191,6 @@ export default function ProductPage() {
                     </div>
                 )}
             </main>
-            <Footer />
         </>
     );
 }
