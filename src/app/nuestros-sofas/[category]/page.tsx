@@ -54,7 +54,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                         >
                             <div className="relative h-[300px] overflow-hidden bg-gray-100">
                                 <Image
-                                    src={`/assets/${product.folder}/${product.images[0]}`}
+                                    src={`/assets/${product.folder}/${product.path}/${product.images[0]}`}
                                     alt={product.title}
                                     fill
                                     className="object-cover transition-transform duration-500 group-hover:scale-105"
