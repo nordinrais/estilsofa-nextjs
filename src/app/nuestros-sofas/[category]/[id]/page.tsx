@@ -4,31 +4,55 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
-import { ESTILSOFA_DATA, ProductData } from "@/data/products";
+import { PRODUCTS } from "@/data/products";
 import { useParams, notFound } from "next/navigation";
 import { useState, useEffect } from "react";
+
+// Define a flexible type for the product
+interface Product {
+    title: string;
+    folder: string;
+    path: string;
+    options?: string[];
+    images: string[];
+    specialPrice?: {
+        price: string;
+        configuration: string;
+        fabric: string;
+        includes: string[];
+        note: string;
+    };
+    [key: string]: any;
+}
 
 export default function ProductPage() {
     const params = useParams();
     const id = params?.id as string;
-    const [product, setProduct] = useState<ProductData | null>(null);
+    const [product, setProduct] = useState<Product | null>(null);
     const [activeImage, setActiveImage] = useState<string>("");
     const [lightboxOpen, setLightboxOpen] = useState(false);
 
     useEffect(() => {
         if (!id) return;
-        // In a real database we would query by ID. Here we find in array.
-        // My data.ts uses 'id' property which matches the URL param.
-        const found = ESTILSOFA_DATA.products.find(p => p.id === id);
+
+        // Find product where path matches the URL param 'id'
+        // The URL is constructed as /nuestros-sofas/[category]/[path]
+        const found = Object.values(PRODUCTS).find((p: any) => p.path === id || p.id === id); // p.id check just in case
+
         if (found) {
-            setProduct(found);
-            setActiveImage(found.images?.[0] || found.image);
+            setProduct(found as Product);
+            // safe access to images
+            if ('images' in found && Array.isArray(found.images) && found.images.length > 0) {
+                setActiveImage(found.images[0]);
+            } else if ('image' in found) {
+                setActiveImage((found as any).image);
+            }
         }
     }, [id]);
 
     if (!product && typeof window !== 'undefined' && id) {
         // Simple client-side check if not found after effect
-        const found = ESTILSOFA_DATA.products.find(p => p.id === id);
+        const found = Object.values(PRODUCTS).find((p: any) => p.path === id);
         if (!found) return <div className="p-20 text-center">Producto no encontrado</div>;
     }
 

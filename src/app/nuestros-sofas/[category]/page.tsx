@@ -1,70 +1,97 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { CATEGORIES, PRODUCTS } from '@/data/products';
 
-// Mock Data - In a real app this would come from Supabase or a data file
-const categoriesData: Record<string, { title: string; description: string; products: any[] }> = {
-    "relax": {
-        title: "Sofás Relax",
-        description: "La combinación perfecta entre tecnología y descanso.",
-        products: [
-            { id: "afrodita", name: "Modelo Afrodita", price: "Desde 899€", image: "/assets/hero/sofa-afrodita-tapizado-claro-pata-metalica-ambiente.webp" },
-            { id: "picaso", name: "Sillón Picaso", price: "Desde 499€", image: "/assets/categorias-de-sofas/categoria-sillones-relax/sillon-relax-levanta-personas-electrico-para-mayores-barato.webp" }
-        ]
-    },
-    "deslizantes": {
-        title: "Sofás Deslizantes",
-        description: "Gana espacio y comodidad con nuestros sistemas deslizantes.",
-        products: [
-            { id: "tokio", name: "Modelo Tokio", price: "Desde 1099€", image: "/assets/categorias-de-sofas/categoria-sofas-deslizantes/sofa-con-asientos-deslizantes-y-cabezales-reclinables-oferta.webp" }
-        ]
-    },
-    // Add other categories as needed or handle default
+// Helper to get products for a category
+const getProductsByCategory = (folder: string) => {
+    return Object.values(PRODUCTS).filter(product => product.folder === folder);
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
+    const { category: categorySlug } = await params;
+    const category = CATEGORIES[categorySlug as keyof typeof CATEGORIES];
+
+    if (!category) {
+        return {
+            title: 'Categoría no encontrada | EstilSofá'
+        };
+    }
+
+    return {
+        title: `${category.title} | EstilSofá`,
+        description: category.description,
+    };
+}
 
 export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
     const { category: categorySlug } = await params;
-    const category = categoriesData[categorySlug];
+    const category = CATEGORIES[categorySlug as keyof typeof CATEGORIES];
 
     if (!category) {
-        // Ideally check against valid categories, if not found show generic or 404
-        // For now, let's allow a fallback for mocked viewing
-        return (
-            <div className="container mx-auto px-6 py-12 text-center">
-                <h1 className="text-4xl font-bold mb-4 font-heading capitalize">{categorySlug.replace('-', ' ')}</h1>
-                <p className="text-xl text-gray-600 mb-8">Mostrando productos de la categoría {categorySlug}...</p>
-                <div className="p-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                    <p className="text-gray-500">Próximamente: Lista completa de productos para esta categoría.</p>
-                    <Link href="/nuestros-sofas" className="text-blue-600 hover:underline mt-4 inline-block">← Volver a Categorías</Link>
-                </div>
-            </div>
-        )
+        notFound();
     }
+
+    const products = getProductsByCategory(category.folder);
 
     return (
         <div className="container mx-auto px-6 py-12">
             <div className="mb-12">
-                <Link href="/nuestros-sofas" className="text-gray-500 hover:text-black mb-4 inline-block transition-colors">← Volver a Categorías</Link>
+                <Link href="/nuestros-sofas" className="text-gray-500 hover:text-black mb-4 inline-block transition-colors">
+                    ← Volver a Categorías
+                </Link>
                 <h1 className="text-4xl font-bold mb-2 font-heading text-[#0F172A]">{category.title}</h1>
-                <p className="text-xl text-gray-600">{category.description}</p>
+                <p className="text-xl text-gray-600 max-w-3xl">{category.description}</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {category.products.map(product => (
-                    <Link key={product.id} href={`/nuestros-sofas/${categorySlug}/${product.id}`} className="group block">
-                        <div className="relative h-[300px] mb-4 overflow-hidden rounded-lg bg-gray-100">
-                            <Image
-                                src={product.image}
-                                alt={product.name}
-                                fill
-                                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                        </div>
-                        <h3 className="text-xl font-bold text-[#0F172A] group-hover:text-[#D97706] transition-colors">{product.name}</h3>
-                        <p className="text-gray-600 font-medium">{product.price}</p>
+            {products.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {products.map((product, index) => (
+                        <Link
+                            key={index}
+                            href={`/nuestros-sofas/${categorySlug}/${product.path}`}
+                            className="group block bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                        >
+                            <div className="relative h-[300px] overflow-hidden bg-gray-100">
+                                <Image
+                                    src={`/assets/${product.folder}/${product.images[0]}`}
+                                    alt={product.title}
+                                    fill
+                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                                {product.options && product.options.length > 0 && (
+                                    <div className="absolute bottom-3 left-3 flex gap-2">
+                                        <span className="bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded text-gray-800 shadow-sm">
+                                            {product.options.length} opciones
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="p-6">
+                                <h3 className="text-xl font-bold text-[#0F172A] group-hover:text-[#D97706] transition-colors mb-2">
+                                    {product.title}
+                                </h3>
+                                {/* Assuming price might not be on all products, checking just in case */}
+                                {'price' in product && (
+                                    <p className="text-[#D97706] font-semibold text-lg">
+                                        {(product as any).price}
+                                    </p>
+                                )}
+                                <div className="mt-4 flex items-center text-sm text-gray-500 font-medium group-hover:text-[#D97706] transition-colors">
+                                    Ver detalles <span className="ml-1">→</span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            ) : (
+                <div className="py-20 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                    <p className="text-xl text-gray-500">No hay productos disponibles en esta categoría actualmente.</p>
+                    <Link href="/nuestros-sofas" className="mt-4 inline-block text-[#D97706] font-semibold hover:underline">
+                        Ver otras categorías
                     </Link>
-                ))}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
