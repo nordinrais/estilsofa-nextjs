@@ -21,6 +21,13 @@ export default function OfferForm() {
             return;
         }
 
+        if (!supabase) {
+            console.error("Supabase not initialized");
+            setStatus('error');
+            setErrorMessage('Error de configuración en el servidor. Inténtalo más tarde.');
+            return;
+        }
+
         setStatus('submitting');
         setErrorMessage('');
 
@@ -49,6 +56,7 @@ export default function OfferForm() {
 
     return (
         <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+            {/* ... rest of the component ... */}
             <h3 className="text-2xl font-bold text-gray-900 mb-2">Solicitar Oferta</h3>
             <p className="text-gray-600 mb-6">Déjanos tus datos y te llamamos para confirmar disponibilidad y envío.</p>
 
