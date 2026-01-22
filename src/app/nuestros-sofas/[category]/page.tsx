@@ -22,17 +22,17 @@ const categoriesData: Record<string, { title: string; description: string; produ
     // Add other categories as needed or handle default
 };
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
-    const categoryId = params.category;
-    const category = categoriesData[categoryId];
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
+    const { category: categorySlug } = await params;
+    const category = categoriesData[categorySlug];
 
     if (!category) {
         // Ideally check against valid categories, if not found show generic or 404
         // For now, let's allow a fallback for mocked viewing
         return (
             <div className="container mx-auto px-6 py-12 text-center">
-                <h1 className="text-4xl font-bold mb-4 font-heading capitalize">{categoryId.replace('-', ' ')}</h1>
-                <p className="text-xl text-gray-600 mb-8">Mostrando productos de la categoría {categoryId}...</p>
+                <h1 className="text-4xl font-bold mb-4 font-heading capitalize">{categorySlug.replace('-', ' ')}</h1>
+                <p className="text-xl text-gray-600 mb-8">Mostrando productos de la categoría {categorySlug}...</p>
                 <div className="p-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
                     <p className="text-gray-500">Próximamente: Lista completa de productos para esta categoría.</p>
                     <Link href="/nuestros-sofas" className="text-blue-600 hover:underline mt-4 inline-block">← Volver a Categorías</Link>
@@ -51,7 +51,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {category.products.map(product => (
-                    <Link key={product.id} href={`/nuestros-sofas/${categoryId}/${product.id}`} className="group block">
+                    <Link key={product.id} href={`/nuestros-sofas/${categorySlug}/${product.id}`} className="group block">
                         <div className="relative h-[300px] mb-4 overflow-hidden rounded-lg bg-gray-100">
                             <Image
                                 src={product.image}
