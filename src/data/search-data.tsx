@@ -1,5 +1,6 @@
 
 import { BLOG_POSTS } from './blog-data';
+import { PRODUCTS, CATEGORIES } from './products';
 
 export type SearchResult = {
     id: string;
@@ -9,20 +10,21 @@ export type SearchResult = {
     type: 'product' | 'blog' | 'page';
 };
 
-// Simulated Product Data (will be replaced by real DB later)
-const PRODUCTS = [
-    { id: 'p1', title: 'Modelo Tokio', category: 'Sofá Relax', url: '/nuestros-sofas/relax' },
-    { id: 'p2', title: 'Modelo Berlín', category: 'Sofá Cama', url: '/nuestros-sofas/cama' },
-    { id: 'p3', title: 'Sillón Picasso', category: 'Sillón Relax', url: '/oferta' }, // Special Offer
-    { id: 'p4', title: 'Modelo París', category: 'Rinconera', url: '/nuestros-sofas/rinconeras' },
-    { id: 'p5', title: 'Modelo Niza', category: 'Deslizante', url: '/nuestros-sofas/deslizantes' },
-    { id: 'p6', title: 'Sillón Relax TOUS', category: 'Sillón Relax', url: '/oferta' },
-];
+// Map folder to category slug for URL building
+const folderToCategorySlug: Record<string, string> = {
+    'sofas-relax': 'relax',
+    'sofas-deslizantes': 'deslizantes',
+    'sofas-cama': 'cama',
+    'sillones-relax': 'sillones',
+    'sofas-fijos': 'fijos',
+    'sillones-fijos': 'sillones-fijos'
+};
 
 const PAGES = [
     { id: 'pg1', title: 'Sobre Nosotros', category: 'Empresa', url: '/sobre-nosotros' },
     { id: 'pg2', title: 'Visítanos / Contacto', category: 'Contacto', url: '/visitanos' },
     { id: 'pg3', title: 'Catálogo Completo', category: 'Navegación', url: '/nuestros-sofas' },
+    { id: 'pg4', title: 'Ofertas', category: 'Promociones', url: '/oferta' },
 ];
 
 export const getSearchResults = (query: string): SearchResult[] => {
@@ -30,10 +32,22 @@ export const getSearchResults = (query: string): SearchResult[] => {
 
     const lowerQuery = query.toLowerCase();
 
-    // 1. Search in Products
-    const productResults: SearchResult[] = PRODUCTS
-        .filter(p => p.title.toLowerCase().includes(lowerQuery) || p.category.toLowerCase().includes(lowerQuery))
-        .map(p => ({ ...p, type: 'product' }));
+    // 1. Search in Products (from real data)
+    const productResults: SearchResult[] = Object.entries(PRODUCTS)
+        .filter(([key, p]) =>
+            p.title.toLowerCase().includes(lowerQuery) ||
+            key.toLowerCase().includes(lowerQuery)
+        )
+        .map(([key, p]) => {
+            const categorySlug = folderToCategorySlug[p.folder] || p.folder;
+            return {
+                id: key,
+                title: p.title,
+                category: CATEGORIES[categorySlug as keyof typeof CATEGORIES]?.title || p.folder,
+                url: `/nuestros-sofas/${categorySlug}/${p.path}`,
+                type: 'product' as const
+            };
+        });
 
     // 2. Search in Blog
     const blogResults: SearchResult[] = BLOG_POSTS
@@ -43,13 +57,13 @@ export const getSearchResults = (query: string): SearchResult[] => {
             title: post.title,
             category: 'Blog',
             url: `/blog/${post.slug}`,
-            type: 'blog'
+            type: 'blog' as const
         }));
 
     // 3. Search in Static Pages
     const pageResults: SearchResult[] = PAGES
         .filter(p => p.title.toLowerCase().includes(lowerQuery))
-        .map(p => ({ ...p, type: 'page' }));
+        .map(p => ({ ...p, type: 'page' as const }));
 
     return [...productResults, ...blogResults, ...pageResults].slice(0, 8); // Limit to 8 results
 };
