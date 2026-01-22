@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import SearchBar from '@/components/ui/SearchBar';
 
 export default function Header() {
     return (
@@ -17,13 +18,9 @@ export default function Header() {
                     />
                 </Link>
 
-                {/* Search Bar (Placeholder for functionality) */}
-                <div className="search-container relative w-[250px] hidden md:block">
-                    <input
-                        type="text"
-                        placeholder="Buscar sofá..."
-                        className="w-full px-4 py-2 border border-blue-200 rounded-full bg-gray-50 text-sm focus:outline-none focus:border-[#ecd75f] focus:ring-2 focus:ring-[#ecd75f]/20 transition-all font-body"
-                    />
+                {/* Search Bar */}
+                <div className="search-container hidden md:block">
+                    <SearchBar />
                 </div>
 
                 {/* Navigation */}
