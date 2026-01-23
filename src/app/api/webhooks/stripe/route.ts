@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     // Manejar el evento de "Pago Completado"
     if (event.type === 'checkout.session.completed') {
-        const session = event.data.object as Stripe.Checkout.Session;
+        const session = event.data.object as any; // Cast a any para evitar errores de tipado estrictos en shipping_details/custom_fields
 
         console.log('💰 Pago recibido:', session.id);
 
