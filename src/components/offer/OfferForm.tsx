@@ -58,7 +58,28 @@ export default function OfferForm() {
         <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
             {/* ... rest of the component ... */}
             <h3 className="text-2xl font-bold text-gray-900 mb-2">Solicitar Oferta</h3>
-            <p className="text-gray-600 mb-6">Déjanos tus datos y te llamamos para confirmar disponibilidad y envío.</p>
+            <p className="text-gray-600 mb-8">Elige cómo prefieres asegurar tu sillón:</p>
+
+            {/* Opciones de Compra/Reserva */}
+            <div className="grid grid-cols-1 gap-4 mb-8">
+                <a
+                    href="https://buy.stripe.com/3cIdR80xJ73ea6r6cI4AU01"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center justify-center p-4 bg-green-50 border-2 border-green-500 rounded-xl hover:bg-green-100 transition-all group text-center"
+                >
+                    <span className="text-green-700 font-bold text-lg mb-1 group-hover:scale-105 transition-transform">💳 COMPRAR AHORA (499€)</span>
+                    <span className="text-sm text-green-600">Pago seguro con tarjeta. Envío prioritario.</span>
+                </a>
+
+                <div className="relative flex items-center py-2">
+                    <div className="flex-grow border-t border-gray-300"></div>
+                    <span className="flex-shrink-0 mx-4 text-gray-400 text-sm">O si prefieres reservar sin pagar</span>
+                    <div className="flex-grow border-t border-gray-300"></div>
+                </div>
+            </div>
+
+            <p className="text-gray-600 mb-6 font-medium">Rellena tus datos y te llamamos:</p>
 
             {status === 'success' ? (
                 <div className="bg-green-50 text-green-800 p-4 rounded-lg text-center animate-fadeIn">
