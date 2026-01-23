@@ -65,9 +65,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
 
     // 4. Páginas del Blog
+    // 4. Páginas del Blog
     const blogPages = BLOG_POSTS.map((post) => ({
         url: `${BASE_URL}/blog/${post.slug}`,
-        lastModified: new Date(post.publishDate), // Convertir string fecha a Date (aproximado)
+        lastModified: new Date(), // Usamos fecha actual para evitar errores con el formato en español ("8 de enero...")
         changeFrequency: 'monthly' as const,
         priority: 0.6,
     }));
