@@ -55,115 +55,105 @@ export default function OfferForm() {
     };
 
     return (
-        <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-            {/* ... rest of the component ... */}
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Solicitar Oferta</h3>
-            <p className="text-gray-600 mb-8">Elige cómo prefieres asegurar tu sillón:</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* OPCIÓN 1: COMPRA DIRECTA (NUEVO DISEÑO DESTACADO) */}
+            <div className="bg-white p-8 rounded-2xl shadow-xl border-2 border-green-500 relative overflow-hidden order-1 lg:order-1 transform hover:scale-[1.01] transition-transform">
+                <div className="absolute top-0 right-0 bg-green-500 text-white px-4 py-1 text-sm font-bold rounded-bl-lg">
+                    OPCIÓN RECOMENDADA
+                </div>
 
-            {/* Opciones de Compra/Reserva */}
-            <div className="grid grid-cols-1 gap-4 mb-8">
-                <a
-                    href="https://buy.stripe.com/3cIdR80xJ73ea6r6cI4AU01"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center justify-center p-4 bg-green-50 border-2 border-green-500 rounded-xl hover:bg-green-100 transition-all group text-center"
-                >
-                    <span className="text-green-700 font-bold text-lg mb-1 group-hover:scale-105 transition-transform">💳 COMPRAR AHORA (499€)</span>
-                    <span className="text-sm text-green-600">Pago seguro con tarjeta. Envío prioritario.</span>
-                </a>
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">COMPRA DIRECTA</h3>
+                <p className="text-gray-500 mb-8">Recíbelo en 48/72h sin esperas.</p>
 
-                <div className="relative flex items-center py-2">
-                    <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="flex-shrink-0 mx-4 text-gray-400 text-sm">O si prefieres reservar sin pagar</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
+                <div className="flex flex-col gap-6 items-center justify-center h-[60%]">
+                    <a
+                        href="https://buy.stripe.com/3cIdR80xJ73ea6r6cI4AU01"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-6 bg-green-600 hover:bg-green-700 text-white font-black text-2xl rounded-xl shadow-lg hover:shadow-2xl flex flex-col items-center justify-center gap-1 group transition-all"
+                    >
+                        <span>COMPRAR AHORA</span>
+                        <span className="text-green-100 text-sm font-normal group-hover:text-white">Pago Único: 499€ (IVA Inc.)</span>
+                    </a>
+
+                    <div className="grid grid-cols-2 gap-4 w-full text-sm text-gray-600 mt-4">
+                        <div className="flex items-center gap-2"><span className="text-green-500 text-xl">🔒</span> Pago 100% Seguro</div>
+                        <div className="flex items-center gap-2"><span className="text-green-500 text-xl">🚚</span> Envío Gratuito</div>
+                        <div className="flex items-center gap-2"><span className="text-green-500 text-xl">🛡️</span> Garantía 3 Años</div>
+                        <div className="flex items-center gap-2"><span className="text-green-500 text-xl">↩️</span> Devolución 14 días</div>
+                    </div>
                 </div>
             </div>
 
-            <p className="text-gray-600 mb-6 font-medium">Rellena tus datos y te llamamos:</p>
+            {/* OPCIÓN 2: SOLICITAR LLAMADA (FORMULARIO EXISTENTE) */}
+            <div className="bg-gray-50 p-8 rounded-2xl border border-gray-200 order-2 lg:order-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">¿Tienes Dudas? Te llamamos</h3>
+                <p className="text-gray-500 mb-6 text-sm">Déjanos tu teléfono y un especialista te explicará todo sin compromiso.</p>
 
-            {status === 'success' ? (
-                <div className="bg-green-50 text-green-800 p-4 rounded-lg text-center animate-fadeIn">
-                    <p className="font-bold text-lg">¡Gracias {formData.name}!</p>
-                    <p>Hemos recibido tu solicitud. Te llamaremos en breve.</p>
-                    <button
-                        onClick={() => setStatus('idle')}
-                        className="mt-4 text-sm text-green-700 underline"
-                    >
-                        Enviar otra solicitud
-                    </button>
-                </div>
-            ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                        <input
-                            type="text"
-                            id="name"
-                            required
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#D97706] focus:border-transparent transition-all"
-                            placeholder="Tu nombre"
-                        />
+                {status === 'success' ? (
+                    <div className="bg-green-100 text-green-800 p-6 rounded-xl text-center border border-green-200">
+                        <div className="text-4xl mb-2">✅</div>
+                        <p className="font-bold text-lg">¡Solicitud Enviada!</p>
+                        <p className="text-sm">Te llamaremos en unos minutos.</p>
+                        <button onClick={() => setStatus('idle')} className="mt-4 text-xs text-green-700 underline">Volver al formulario</button>
                     </div>
-                    <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            required
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#D97706] focus:border-transparent transition-all"
-                            placeholder="600 000 000"
-                        />
-                    </div>
-
-                    <div className="space-y-3 pt-2">
-                        <label className="flex items-start gap-3 cursor-pointer group">
+                ) : (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
                             <input
-                                type="checkbox"
+                                type="text"
                                 required
-                                checked={formData.consent}
-                                onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
-                                className="mt-1 w-4 h-4 text-[#D97706] rounded border-gray-300 focus:ring-[#D97706]"
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+                                placeholder="Tu nombre"
                             />
-                            <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                                Acepto la <a href="#" className="underline decoration-gray-400 hover:decoration-[#D97706]">política de privacidad</a> *
-                            </span>
-                        </label>
-                        <label className="flex items-start gap-3 cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={formData.newsletter}
-                                onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
-                                className="mt-1 w-4 h-4 text-[#D97706] rounded border-gray-300 focus:ring-[#D97706]"
-                            />
-                            <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                                Quiero recibir ofertas exclusivas
-                            </span>
-                        </label>
-                    </div>
-
-                    {status === 'error' && (
-                        <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
-                            {errorMessage}
                         </div>
-                    )}
+                        <div>
+                            <input
+                                type="tel"
+                                required
+                                value={formData.phone}
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+                                placeholder="Tu teléfono"
+                            />
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={status === 'submitting'}
-                        className="w-full bg-[#D97706] hover:bg-[#b45309] text-white font-bold py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                        {status === 'submitting' ? 'Enviando...' : 'SOLICITAR AHORA'}
-                    </button>
+                        <div className="space-y-2 pt-1">
+                            <label className="flex items-start gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    required
+                                    checked={formData.consent}
+                                    onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
+                                    className="mt-1 w-4 h-4 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                                />
+                                <span className="text-xs text-gray-500">Acepto la política de privacidad *</span>
+                            </label>
+                            <label className="flex items-start gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={formData.newsletter}
+                                    onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
+                                    className="mt-1 w-4 h-4 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                                />
+                                <span className="text-xs text-gray-500">Recibir ofertas</span>
+                            </label>
+                        </div>
 
-                    <p className="text-xs text-center text-gray-400 mt-4">
-                        🔒 Tus datos están 100% seguros y no serán compartidos.
-                    </p>
-                </form>
-            )}
+                        {status === 'error' && <div className="text-red-600 text-xs text-center">{errorMessage}</div>}
+
+                        <button
+                            type="submit"
+                            disabled={status === 'submitting'}
+                            className="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-lg shadow-md transition-all disabled:opacity-70"
+                        >
+                            {status === 'submitting' ? 'Enviando...' : 'SOLICITAR LLAMADA GRATIS'}
+                        </button>
+                    </form>
+                )}
+            </div>
         </div>
     );
 }

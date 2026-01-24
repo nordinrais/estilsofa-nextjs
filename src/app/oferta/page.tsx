@@ -33,8 +33,8 @@ export default function OfferPage() {
                                 El <strong>Sillón Power Lift TOUS</strong>: la solución definitiva para el descanso y la movilidad en el hogar. Levántese y siéntese con total seguridad.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                <Link href="#reservar" className="bg-[#D97706] text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:bg-[#b45309] hover:-translate-y-1 transition-all">
-                                    Solicitar Prueba
+                                <Link href="#comprar" className="bg-[#D97706] text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:bg-[#b45309] hover:-translate-y-1 transition-all animate-pulse">
+                                    COMPRAR AHORA (499€)
                                 </Link>
                                 <Link href="tel:961443681" className="border-2 border-[#0F172A] text-[#0F172A] px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
                                     <span>📞</span> 961 443 681
@@ -210,7 +210,7 @@ export default function OfferPage() {
                 </div>
 
                 {/* 6. FORM SECTION */}
-                <div id="reservar" className="max-w-2xl mx-auto scroll-mt-24">
+                <div id="comprar" className="max-w-4xl mx-auto scroll-mt-24">
                     <OfferForm />
                 </div>
 

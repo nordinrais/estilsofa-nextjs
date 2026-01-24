@@ -4,10 +4,10 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { supabase } from '@/lib/supabase';
 
-// Inicializar Stripe (usará la clave secreta desde variables de entorno)
-// Nota: Necesitamos la clave secreta que empieza por sk_
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2024-12-18.acacia' as any, // Usamos una versión reciente o la que typescript acepte
+// Inicializar Stripe de forma segura para evitar errores en tiempo de construcción (build)
+// Si la clave no está, usamos un string vacío para que no rompa el build, pero la validación dentro del handler fallará (correcto).
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'dummy_key_for_build', {
+    apiVersion: '2024-12-18.acacia' as any,
 });
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
