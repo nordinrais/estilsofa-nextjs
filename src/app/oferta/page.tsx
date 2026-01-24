@@ -119,8 +119,8 @@ export default function OfferPage() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link href="#reservar" className="flex-1 bg-[#D97706] text-white text-center py-4 rounded-lg font-bold text-lg hover:bg-[#b45309] shadow-md transition-all">
-                                Reservar Oferta
+                            <Link href="#comprar" className="flex-1 bg-[#D97706] text-white text-center py-4 rounded-lg font-bold text-lg hover:bg-[#b45309] shadow-md transition-all animate-pulse">
+                                COMPRAR AHORA (499€)
                             </Link>
                             <a
                                 href="https://wa.me/34677481926?text=Hola,%20estoy%20viendo%20la%20oferta%20del%20Sill%C3%B3n%20TOUS%20y%20me%20gustar%C3%ADa%20asesoramiento."
