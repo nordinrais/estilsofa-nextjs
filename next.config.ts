@@ -70,8 +70,22 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Catch-all for any other /pages/*.html requests
+      {
+        source: '/pages/:path*.html',
+        destination: '/:path*',
+        permanent: true,
+      },
+      // Catch-all for any *.html requests at root
+      {
+        source: '/:path*.html',
+        destination: '/:path*',
+        permanent: true,
+      },
     ]
   },
+  // Handle trailing slashes consistently
+  trailingSlash: false,
 };
 
 export default nextConfig;
