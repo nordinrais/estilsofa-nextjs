@@ -1,21 +1,13 @@
+"use client";
 
 import Image from 'next/image';
 import Link from 'next/link';
 import OfferForm from '@/components/offer/OfferForm';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Oferta Exclusiva Sillón TOUS | EstilSofa',
-    description: 'Sillón Relax Power Lift TOUS por solo 499€. Mejora tu calidad de vida con el sistema levantapersonas y entrega Guante Blanco.',
-    openGraph: {
-        title: 'Oferta Exclusiva Sillón TOUS - EstilSofa',
-        description: 'Sillón Relax Power Lift TOUS por solo 499€. Mejora tu calidad de vida.',
-        images: ['/assets/sillones-relax/sillon-relax-pl-tous/01_sillon-relax-levantapersonas-barato.webp'],
-        type: 'website',
-    },
-};
+import { useState } from 'react';
 
 export default function OfferPage() {
+    const [fabricZoom, setFabricZoom] = useState<string | null>(null);
+
     return (
         <div className="bg-gray-50 font-sans">
             {/* HERO SECTION - Split Design */}
@@ -106,15 +98,36 @@ export default function OfferPage() {
                             <div className="mt-6 pt-4 border-t">
                                 <p className="text-sm text-gray-500 mb-3">Colores disponibles (Stock inmediato):</p>
                                 <div className="flex gap-6">
-                                    <div className="group cursor-pointer">
-                                        <div className="w-12 h-12 rounded-full bg-[#A6A6A6] border-2 border-gray-200 group-hover:border-[#D97706] group-hover:scale-110 transition-all shadow-sm"></div>
-                                        <span className="text-xs text-center block mt-1 text-gray-500">Piedra</span>
+                                    <div
+                                        className="group cursor-pointer text-center"
+                                        onClick={() => setFabricZoom("/assets/telas/tela-color-piedra.webp")}
+                                    >
+                                        <div className="w-14 h-14 rounded-full border-2 border-gray-200 group-hover:border-[#D97706] group-hover:scale-110 transition-all shadow-sm overflow-hidden relative mb-1">
+                                            <Image
+                                                src="/assets/telas/tela-color-piedra.webp"
+                                                alt="Color Piedra"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <span className="text-xs text-gray-500 font-medium">Piedra</span>
                                     </div>
-                                    <div className="group cursor-pointer">
-                                        <div className="w-12 h-12 rounded-full bg-[#8D837D] border-2 border-gray-200 group-hover:border-[#D97706] group-hover:scale-110 transition-all shadow-sm"></div>
-                                        <span className="text-xs text-center block mt-1 text-gray-500">Mouse</span>
+                                    <div
+                                        className="group cursor-pointer text-center"
+                                        onClick={() => setFabricZoom("/assets/telas/tela-color-mouse.webp")}
+                                    >
+                                        <div className="w-14 h-14 rounded-full border-2 border-gray-200 group-hover:border-[#D97706] group-hover:scale-110 transition-all shadow-sm overflow-hidden relative mb-1">
+                                            <Image
+                                                src="/assets/telas/tela-color-mouse.webp"
+                                                alt="Color Mouse"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <span className="text-xs text-gray-500 font-medium">Mouse</span>
                                     </div>
                                 </div>
+                                <p className="text-[10px] text-gray-400 mt-2 italic">🔍 Haz clic en el color para ampliar la textura</p>
                             </div>
                         </div>
 
@@ -215,6 +228,27 @@ export default function OfferPage() {
                 </div>
 
             </main>
+
+            {/* Fabric Zoom Lightbox */}
+            {fabricZoom && (
+                <div
+                    className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-200"
+                    onClick={() => setFabricZoom(null)}
+                >
+                    <button className="absolute top-6 right-6 text-white text-5xl hover:text-primary transition-colors hover:rotate-90 duration-300">&times;</button>
+                    <div className="relative w-full max-w-4xl h-[80vh] bg-white rounded-lg overflow-hidden shadow-2xl">
+                        <Image
+                            src={fabricZoom}
+                            alt="Textura ampliada"
+                            fill
+                            className="object-contain p-2"
+                        />
+                        <div className="absolute bottom-0 left-0 w-full bg-black/50 text-white p-4 text-center font-medium backdrop-blur-sm">
+                            Textura Real: {fabricZoom.includes('piedra') ? 'Color Piedra' : 'Color Mouse'}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

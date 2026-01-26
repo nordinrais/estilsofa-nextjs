@@ -170,6 +170,82 @@ export default function ProductPage() {
                                 Pedir Cita en Tienda
                             </Link>
                         </div>
+
+                        {/* PDF Catalogue Button */}
+                        {product.pdf && (
+                            <div className="mt-8 pt-8 border-t border-gray-100">
+                                <a
+                                    href={getImagePath(product.pdf)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+                                >
+                                    <div className="w-12 h-12 bg-red-100 text-red-600 flex items-center justify-center rounded-lg text-2xl group-hover:scale-110 transition-transform">
+                                        📄
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-gray-900">Catálogo Técnico PDF</p>
+                                        <p className="text-sm text-gray-500">Descargar especificaciones completas</p>
+                                    </div>
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Technical Options Image Section */}
+                {product.optionsImage && (
+                    <div className="mt-20 pt-10 border-t border-gray-200">
+                        <div className="text-center mb-10">
+                            <h2 className="text-3xl font-bold font-heading mb-4">Especificaciones y Medidas</h2>
+                            <p className="text-gray-600">Consulta todas las configuraciones técnicas disponibles para el {product.title}</p>
+                        </div>
+                        <div className="relative max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden p-4 border border-gray-100">
+                            <Image
+                                src={getImagePath(product.optionsImage)}
+                                alt={`Especificaciones ${product.title}`}
+                                width={1200}
+                                height={800}
+                                className="w-full h-auto"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* Related Products Section */}
+                <div className="mt-16 pt-10 border-t border-gray-200">
+                    <h2 className="text-2xl font-bold font-heading mb-8 text-center text-gray-900 uppercase tracking-wide">También te puede interesar</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {Object.values(PRODUCTS)
+                            .filter((p: any) => p.folder === product.folder && (p.path || p.id) !== (product.path || product.id))
+                            .slice(0, 4)
+                            .map((p: any) => {
+                                const productPath = p.path || p.id;
+                                return (
+                                    <Link
+                                        key={productPath}
+                                        href={`/nuestros-sofas/${p.folder}/${productPath}`}
+                                        className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200"
+                                    >
+                                        <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
+                                            <Image
+                                                src={`/assets/${p.folder}/${productPath}/${p.images[0]}`}
+                                                alt={p.title}
+                                                fill
+                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        </div>
+                                        <div className="p-4">
+                                            <h3 className="font-bold text-gray-800 text-sm md:text-base group-hover:text-primary transition-colors leading-snug">{p.title}</h3>
+                                            <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">{p.folder.replace('-', ' ')}</p>
+                                            <div className="mt-3 flex items-center text-primary font-bold text-xs">
+                                                VER MÁS
+                                                <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
                     </div>
                 </div>
 
