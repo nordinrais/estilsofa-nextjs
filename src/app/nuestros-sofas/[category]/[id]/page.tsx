@@ -31,6 +31,16 @@ export default function ProductPage() {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'caracteristicas' | 'especificaciones'>('caracteristicas');
 
+    const handleTabClick = (tab: 'caracteristicas' | 'especificaciones') => {
+        setActiveTab(tab);
+        setTimeout(() => {
+            const element = document.getElementById('product-details-section');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    };
+
     useEffect(() => {
         if (!id) return;
 
@@ -114,9 +124,25 @@ export default function ProductPage() {
                     </div>
 
                     {/* Info Section */}
-                    <div>
+                    <div className="flex flex-col">
                         <h1 className="text-4xl font-bold mb-2 font-heading">{product.title}</h1>
-                        <p className="text-xl text-gray-600 mb-8">Diseño y Calidad Premium</p>
+                        <p className="text-xl text-gray-600 mb-6">Diseño y Calidad Premium</p>
+
+                        {/* Side Column Tab Navigation */}
+                        <div className="flex flex-col sm:flex-row gap-3 mb-8 bg-gray-50 p-2 rounded-xl border border-gray-100">
+                            <button
+                                onClick={() => handleTabClick('caracteristicas')}
+                                className={`flex-1 py-3 px-4 rounded-lg font-bold transition-all text-sm md:text-base ${activeTab === 'caracteristicas' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}
+                            >
+                                ✨ Características
+                            </button>
+                            <button
+                                onClick={() => handleTabClick('especificaciones')}
+                                className={`flex-1 py-3 px-4 rounded-lg font-bold transition-all text-sm md:text-base ${activeTab === 'especificaciones' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}
+                            >
+                                📐 Especificaciones
+                            </button>
+                        </div>
 
                         <div className="flex flex-col gap-4">
                             <a
@@ -133,20 +159,21 @@ export default function ProductPage() {
                     </div>
                 </div>
 
-                {/* Tabs Section */}
-                <div className="mt-16">
+                {/* Content Section (Anchor for scroll) */}
+                <div id="product-details-section" className="mt-16 pt-8 scroll-mt-24">
+                    {/* Synchronized Tab Bar (Optional, can be hidden if user wants only side buttons) */}
                     <div className="flex border-b border-gray-200 mb-8 overflow-x-auto">
                         <button
                             onClick={() => setActiveTab('caracteristicas')}
                             className={`py-4 px-8 font-bold text-lg whitespace-nowrap transition-colors border-b-2 ${activeTab === 'caracteristicas' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
                         >
-                            Características
+                            Detalles y Beneficios
                         </button>
                         <button
                             onClick={() => setActiveTab('especificaciones')}
                             className={`py-4 px-8 font-bold text-lg whitespace-nowrap transition-colors border-b-2 ${activeTab === 'especificaciones' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
                         >
-                            Especificaciones Técnicas
+                            Ficha Técnica
                         </button>
                     </div>
 
