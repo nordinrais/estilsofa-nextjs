@@ -5,13 +5,15 @@ export function middleware(request: NextRequest) {
     const hostname = request.headers.get('host') || ''
 
     // Forzar redirección canónica: estilsofa.com → www.estilsofa.com
-    // Esto asegura que todo el tráfico vaya a la versión con www
+    // COMENTADO TEMPORALMENTE: Para permitir ver la web en estilsofa.com mientras se propaga www
+    /*
     if (hostname === 'estilsofa.com' || hostname === 'estilsofa.com:3000') {
         const url = request.nextUrl.clone()
         url.host = hostname.includes(':3000') ? 'www.estilsofa.com:3000' : 'www.estilsofa.com'
         url.protocol = 'https'
         return NextResponse.redirect(url, 301)
     }
+    */
 
     const pathname = request.nextUrl.pathname
 
