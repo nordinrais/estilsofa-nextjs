@@ -2,6 +2,17 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+    const hostname = request.headers.get('host') || ''
+
+    // Forzar redirección canónica: estilsofa.com → www.estilsofa.com
+    // Esto asegura que todo el tráfico vaya a la versión con www
+    if (hostname === 'estilsofa.com' || hostname === 'estilsofa.com:3000') {
+        const url = request.nextUrl.clone()
+        url.host = hostname.includes(':3000') ? 'www.estilsofa.com:3000' : 'www.estilsofa.com'
+        url.protocol = 'https'
+        return NextResponse.redirect(url, 301)
+    }
+
     const pathname = request.nextUrl.pathname
 
     // Handle /pages/*.html URLs
@@ -31,8 +42,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        // Match all paths that contain .html
-        '/:path*.html',
-        '/pages/:path*',
+        // Match all paths except static files and api routes
+        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
     ],
 }
