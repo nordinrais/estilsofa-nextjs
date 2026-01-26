@@ -128,6 +128,27 @@ export default function ProductPage() {
                         <h1 className="text-4xl font-bold mb-2 font-heading">{product.title}</h1>
                         <p className="text-xl text-gray-600 mb-6">Diseño y Calidad Premium</p>
 
+                        {/* Product Highlights */}
+                        <div className="mb-8 border-b border-gray-100 pb-6">
+                            <ul className="space-y-3 text-gray-700 text-base md:text-lg">
+                                <li className="flex gap-3 items-start"><span className="text-primary font-bold">✓</span> <span><strong>Fabricación nacional</strong> de alta calidad</span></li>
+                                <li className="flex gap-3 items-start"><span className="text-primary font-bold">✓</span> <span><strong>Estructura reforzada</strong> de madera maciza</span></li>
+                                <li className="flex gap-3 items-start"><span className="text-primary font-bold">✓</span> <span>Disponible en <strong>múltiples tejidos</strong> antimanchas</span></li>
+                                <li className="flex gap-3 items-start"><span className="text-primary font-bold">✓</span> <span>Máxima ergonomía y <strong>garantía de confort</strong></span></li>
+                                <li className="flex gap-3 items-start"><span className="text-primary font-bold">✓</span> <span>Opciones de personalización en medidas</span></li>
+                            </ul>
+
+                            <div className="mt-6 bg-blue-50/50 p-4 rounded-xl border border-blue-100/50">
+                                <h4 className="font-bold text-sm text-blue-900 mb-1 uppercase tracking-wider">Opciones Disponibles</h4>
+                                <p className="text-sm text-blue-800 leading-relaxed">
+                                    {formatOptions(product.options)
+                                        ? `Personalizable en diferentes medidas, tapizados y configuraciones (${formatOptions(product.options)}).`
+                                        : "Personalizable en diferentes tapizados y acabados. Consulta en tienda."
+                                    }
+                                </p>
+                            </div>
+                        </div>
+
                         {/* Side Column Tab Navigation */}
                         <div className="flex flex-col sm:flex-row gap-3 mb-8 bg-gray-50 p-2 rounded-xl border border-gray-100">
                             <button
@@ -166,23 +187,19 @@ export default function ProductPage() {
                         {activeTab === 'caracteristicas' && (
                             <div className="grid md:grid-cols-2 gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                 <div>
-                                    <h3 className="font-bold text-2xl mb-6 font-heading text-gray-900 border-l-4 border-primary pl-4">Detalles del Producto</h3>
-                                    <ul className="space-y-4 text-gray-700 text-lg">
-                                        <li className="flex gap-3"><span className="text-primary font-bold text-xl">✓</span> <span><strong>Fabricación nacional</strong> de alta calidad artesanal</span></li>
-                                        <li className="flex gap-3"><span className="text-primary font-bold text-xl">✓</span> <span><strong>Estructura reforzada</strong> de madera de pino maciza</span></li>
-                                        <li className="flex gap-3"><span className="text-primary font-bold text-xl">✓</span> <span>Disponible en <strong>múltiples tejidos</strong> y colores antimanchas</span></li>
-                                        <li className="flex gap-3"><span className="text-primary font-bold text-xl">✓</span> <span>Máxima ergonomía con <strong>garantía de confort</strong> EstilSofa</span></li>
-                                        <li className="flex gap-3"><span className="text-primary font-bold text-xl">✓</span> <span>Opciones de personalización en medidas y firmeza</span></li>
-                                    </ul>
-
-                                    <div className="mt-8">
-                                        <h3 className="font-bold text-lg mb-2">Opciones Disponibles</h3>
-                                        <p className="text-gray-600 leading-relaxed">
-                                            {formatOptions(product.options)
-                                                ? `Este modelo se puede personalizar en diferentes medidas, tapizados y configuraciones (${formatOptions(product.options)}). Consulta disponibilidad en tienda.`
-                                                : "Este modelo se puede personalizar en diferentes tapizados y acabados. Consulta disponibilidad en tienda."
-                                            }
-                                        </p>
+                                    <div>
+                                        <h3 className="font-bold text-2xl mb-6 font-heading text-gray-900 border-l-4 border-primary pl-4">Compromiso de Calidad EstilSofa</h3>
+                                        <div className="prose prose-gray max-w-none text-lg leading-relaxed">
+                                            <p>
+                                                Cada uno de nuestros modelos es el resultado de décadas de experiencia en el descanso.
+                                                Utilizamos materiales de primera calidad y procesos de fabricación que garantizan la durabilidad
+                                                y el máximo confort en tu hogar.
+                                            </p>
+                                            <p className="mt-4">
+                                                Ven a visitarnos a nuestra exposición para probar la comodidad de nuestros sofás en persona
+                                                y descubrir todas las muestras de tejidos exclusivas.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
